@@ -11,7 +11,8 @@ const libros = [
     estrellas: 5,
     reseñas: 2847,
     badge: "bestseller",
-    badgeLabel: "Best Seller"
+    badgeLabel: "Best Seller",
+    resena: "Un análisis fascinante de los mecanismos del poder a lo largo de la historia. Greene destila siglos de sabiduría política y estratégica en 48 leyes concretas que te enseñarán a moverte con inteligencia en cualquier entorno. Lectura obligada para líderes y estrategas."
   },
   {
     id: 2,
@@ -24,7 +25,8 @@ const libros = [
     estrellas: 4,
     reseñas: 1203,
     badge: "new",
-    badgeLabel: "Nuevo"
+    badgeLabel: "Nuevo",
+    resena: "Un recorrido magistral por los grandes acontecimientos que dieron forma al mundo contemporáneo. McNeill conecta civilizaciones, guerras, ideas y revoluciones en una narrativa fluida que convierte la historia en algo apasionante y completamente accesible."
   },
   {
     id: 3,
@@ -36,7 +38,8 @@ const libros = [
     categoria: "negocios",
     estrellas: 4,
     reseñas: 984,
-    badge: null
+    badge: null,
+    resena: "Usando modelos matemáticos y teoría de juegos, el autor revela cómo funciona realmente el poder político. Una obra que cambia la forma en que ves las decisiones de gobiernos, empresas y organizaciones. Perspicaz, provocador y sorprendentemente práctico."
   },
   {
     id: 4,
@@ -49,7 +52,8 @@ const libros = [
     estrellas: 5,
     reseñas: 5621,
     badge: "best",
-    badgeLabel: "Clásico"
+    badgeLabel: "Clásico",
+    resena: "Escrito hace más de 2,500 años, este tratado militar sigue siendo la guía de estrategia más influyente de todos los tiempos. Sus principios se aplican hoy en los negocios, la negociación y el liderazgo. Breve, profundo e imperecedero."
   },
   {
     id: 5,
@@ -62,7 +66,8 @@ const libros = [
     estrellas: 5,
     reseñas: 8902,
     badge: "bestseller",
-    badgeLabel: "Best Seller"
+    badgeLabel: "Best Seller",
+    resena: "Un viaje extraordinario por 70,000 años de historia humana. Harari explica cómo el Homo sapiens conquistó el planeta gracias al lenguaje, la cooperación y la capacidad de creer en ficciones compartidas. Una obra que te hará repensar todo lo que creías saber sobre la humanidad."
   },
   {
     id: 6,
@@ -75,7 +80,8 @@ const libros = [
     estrellas: 5,
     reseñas: 12430,
     badge: "best",
-    badgeLabel: "Clásico"
+    badgeLabel: "Clásico",
+    resena: "Basado en el estudio de las mentes más exitosas del siglo XX, Hill revela los 13 principios que llevan a la riqueza y el éxito. Un clásico de la mentalidad de crecimiento que ha transformado millones de vidas desde su publicación en 1937."
   },
   {
     id: 7,
@@ -88,7 +94,8 @@ const libros = [
     estrellas: 5,
     reseñas: 7342,
     badge: "new",
-    badgeLabel: "Nuevo"
+    badgeLabel: "Nuevo",
+    resena: "Hawking lleva al lector a explorar los misterios más profundos del universo: el Big Bang, los agujeros negros, el tiempo y la naturaleza del espacio. Escrito con una claridad asombrosa, hace accesible la física teórica a cualquier persona curiosa."
   },
   {
     id: 8,
@@ -101,7 +108,8 @@ const libros = [
     estrellas: 5,
     reseñas: 3210,
     badge: "best",
-    badgeLabel: "Clásico"
+    badgeLabel: "Clásico",
+    resena: "La obra cumbre de la literatura en español y una de las más importantes de la historia universal. Cervantes narra las aventuras del idealista Don Quijote y su fiel escudero Sancho Panza en un relato que mezcla humor, filosofía y profunda humanidad."
   }
 ];
 
@@ -336,17 +344,66 @@ function scrollCatalogo() {
   document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
 }
 
-// ===== VISTA RÁPIDA (placeholder) =====
+// ===== VISTA PREVIA LIBRO =====
 function verDetalle(id) {
-  const libro = libros.find(l => l.id === id);
-  mostrarToast(`📖 "${libro.titulo}" — $${libro.precio.toFixed(2)}`);
+  const l = libros.find(x => x.id === id);
+  if (!l) return;
+
+  const ahorro = (((l.precioOriginal - l.precio) / l.precioOriginal) * 100).toFixed(0);
+  const estrellas = "★".repeat(l.estrellas) + "☆".repeat(5 - l.estrellas);
+  const enCarrito = carrito.find(i => i.id === id);
+
+  document.getElementById("previa-img").src = l.img;
+  document.getElementById("previa-img").alt = l.titulo;
+  document.getElementById("previa-cat").textContent = l.categoria.toUpperCase();
+  document.getElementById("previa-titulo").textContent = l.titulo;
+  document.getElementById("previa-autor").textContent = "✍️ " + l.autor;
+  document.getElementById("previa-estrellas").innerHTML = `${estrellas} <span style="color:var(--text-muted);font-size:12px">(${l.reseñas.toLocaleString()} reseñas)</span>`;
+  document.getElementById("previa-precio").textContent = "$" + l.precio.toFixed(2);
+  document.getElementById("previa-precio-orig").textContent = "$" + l.precioOriginal.toFixed(2);
+  document.getElementById("previa-ahorro").textContent = "-" + ahorro + "%";
+  document.getElementById("previa-resena").textContent = l.resena || "Sin descripción disponible. Agrega una reseña desde el panel de administración.";
+
+  // Badge
+  const badgeWrap = document.getElementById("previa-badge-wrap");
+  badgeWrap.innerHTML = l.badge ? `<div class="libro-badge ${l.badge}">${l.badgeLabel}</div>` : "";
+
+  // Botón agregar
+  const btnAgregar = document.getElementById("previa-btn-agregar");
+  if (enCarrito) {
+    btnAgregar.innerHTML = `<i class="fa fa-check"></i> Agregado al carrito`;
+    btnAgregar.classList.add("added");
+    btnAgregar.onclick = null;
+  } else {
+    btnAgregar.innerHTML = `<i class="fa fa-cart-plus"></i> Agregar al carrito`;
+    btnAgregar.classList.remove("added");
+    btnAgregar.onclick = () => {
+      agregarCarrito(l.id, btnAgregar);
+      btnAgregar.innerHTML = `<i class="fa fa-check"></i> Agregado al carrito`;
+      btnAgregar.onclick = null;
+    };
+  }
+
+  // Guardar libro para botón ayuda
+  window._libroEnPrevia = l.titulo;
+
+  document.getElementById("previaModal").classList.add("open");
+  document.getElementById("previaOverlay").classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function cerrarPrevia() {
+  document.getElementById("previaModal").classList.remove("open");
+  document.getElementById("previaOverlay").classList.remove("active");
+  document.body.style.overflow = "";
+  window._libroEnPrevia = null;
 }
 
 // ===========================
 // PANEL DE ADMINISTRACIÓN
 // ===========================
 
-const ADMIN_PASS = "97030625"; // ← Cambia aquí tu contraseña
+const ADMIN_PASS = "admin123"; // ← Cambia aquí tu contraseña
 
 // ----- LOGIN -----
 function abrirLogin() {
@@ -461,19 +518,20 @@ function guardarLibro() {
   if (isNaN(precio) || precio <= 0) { document.getElementById("f-precio").classList.add("error"); errores = true; }
   if (errores) { mostrarToast("⚠️ Completa los campos obligatorios"); return; }
 
+  const resena  = document.getElementById("f-resena").value.trim();
   const badgeLabels = { bestseller: "Best Seller", new: "Nuevo", best: "Clásico" };
 
   if (id) {
     // Editar existente
     const idx = libros.findIndex(l => l.id === parseInt(id));
     if (idx !== -1) {
-      libros[idx] = { ...libros[idx], titulo, autor, precio, precioOriginal: precioO, categoria: cat, estrellas, reseñas, img, badge: badgeV || null, badgeLabel: badgeLabels[badgeV] || "" };
+      libros[idx] = { ...libros[idx], titulo, autor, precio, precioOriginal: precioO, categoria: cat, estrellas, reseñas, img, badge: badgeV || null, badgeLabel: badgeLabels[badgeV] || "", resena };
       mostrarToast(`✏️ "${titulo}" actualizado`);
     }
   } else {
     // Nuevo libro
     const newId = libros.length ? Math.max(...libros.map(l => l.id)) + 1 : 1;
-    libros.push({ id: newId, titulo, autor, precio, precioOriginal: precioO, categoria: cat, estrellas, reseñas, img, badge: badgeV || null, badgeLabel: badgeLabels[badgeV] || "" });
+    libros.push({ id: newId, titulo, autor, precio, precioOriginal: precioO, categoria: cat, estrellas, reseñas, img, badge: badgeV || null, badgeLabel: badgeLabels[badgeV] || "", resena });
     mostrarToast(`✅ "${titulo}" agregado al catálogo`);
   }
 
@@ -499,6 +557,7 @@ function editarLibro(id) {
   document.getElementById("f-reseñas").value    = l.reseñas;
   document.getElementById("f-img").value        = l.img;
   document.getElementById("f-badge").value      = l.badge || "";
+  document.getElementById("f-resena").value     = l.resena || "";
 
   previewImg();
   document.getElementById("form-titulo-admin").innerHTML = `<i class="fa fa-pen"></i> Editando: ${l.titulo}`;
@@ -540,6 +599,7 @@ function cancelarEdicion() {
   document.getElementById("f-reseñas").value = "";
   document.getElementById("f-categoria").value = "negocios";
   document.getElementById("f-badge").value = "";
+  document.getElementById("f-resena").value = "";
   document.getElementById("img-preview").style.display = "none";
   document.getElementById("img-preview-placeholder").style.display = "flex";
   document.getElementById("form-titulo-admin").innerHTML = `<i class="fa fa-plus-circle"></i> Agregar nuevo libro`;
@@ -662,5 +722,52 @@ function enviarPedidoWhatsapp() {
 
   cerrarCheckout();
   mostrarToast("✅ ¡Pedido enviado por WhatsApp!");
+}
 
+// ===========================
+// BOTÓN FLOTANTE DE AYUDA
+// ===========================
+
+function toggleAyuda() {
+  const menu = document.getElementById("helpMenu");
+  menu.classList.toggle("open");
+}
+
+// Cerrar al hacer clic fuera
+document.addEventListener("click", (e) => {
+  const menu = document.getElementById("helpMenu");
+  const bubble = document.getElementById("helpBubble");
+  if (menu && bubble && !menu.contains(e.target) && !bubble.contains(e.target)) {
+    menu.classList.remove("open");
+  }
+});
+
+function abrirAyuda() {
+  cerrarPrevia();
+  setTimeout(() => {
+    document.getElementById("helpMenu").classList.add("open");
+  }, 300);
+}
+
+function enviarAyuda(tipo) {
+  document.getElementById("helpMenu").classList.remove("open");
+
+  const libroPrevia = window._libroEnPrevia || "";
+  let msg = "";
+
+  if (tipo === "solicitar") {
+    msg = "Hola 👋, quisiera solicitar un libro que no encontré en el catálogo:\n\n📖 *Título:* \n✍️ *Autor (si lo sé):* \n\n¿Pueden conseguirlo?";
+    if (libroPrevia) msg = `Hola 👋, tengo una pregunta sobre el libro *"${libroPrevia}"* que vi en su catálogo.\n\n¿Podrían darme más información?`;
+  } else if (tipo === "duda") {
+    msg = "Hola 👋, tengo una duda sobre la Librería Digital:\n\n💬 *Mi pregunta:* ";
+  } else if (tipo === "pago") {
+    msg = "Hola 👋, quisiera saber los métodos de pago disponibles para realizar mi compra. ¿Con qué opciones cuentan?";
+  } else if (tipo === "entrega") {
+    msg = "Hola 👋, quisiera saber cómo recibo mi libro digital después de confirmar el pago. ¿Cuál es el proceso de entrega?";
+  } else if (tipo === "promo") {
+    msg = "Hola 👋, quisiera saber si tienen promociones, descuentos o paquetes disponibles actualmente. 🎁";
+  }
+
+  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  window.open(url, "_blank");
 }
