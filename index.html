@@ -70,7 +70,8 @@
 
   <!-- BADGES -->
   <div class="badges-bar">
-    <div class="badge-item"><i class="fa fa-truck"></i> Envíos Digital</div>
+    <div class="badge-item"><i class="fa fa-truck"></i> Envío gratis desde $299</div>
+    <div class="badge-item"><i class="fa fa-rotate-left"></i> Devoluciones en 30 días</div>
     <div class="badge-item"><i class="fa fa-lock"></i> Pago 100% seguro</div>
     <div class="badge-item"><i class="fa fa-headset"></i> Soporte 24/7</div>
   </div>
@@ -138,6 +139,88 @@
     </div>
   </aside>
 
+  <!-- MODAL VISTA PREVIA LIBRO -->
+  <div class="modal-overlay" id="previaOverlay" onclick="cerrarPrevia()"></div>
+  <div class="modal previa-modal" id="previaModal">
+    <button class="modal-close previa-close" onclick="cerrarPrevia()"><i class="fa fa-times"></i></button>
+    <div class="previa-inner">
+      <div class="previa-img-col">
+        <img id="previa-img" src="" alt="" />
+        <div class="previa-badge-wrap" id="previa-badge-wrap"></div>
+      </div>
+      <div class="previa-info-col">
+        <span class="previa-cat" id="previa-cat"></span>
+        <h2 class="previa-titulo" id="previa-titulo"></h2>
+        <p class="previa-autor" id="previa-autor"></p>
+        <div class="previa-estrellas" id="previa-estrellas"></div>
+        <div class="previa-precios">
+          <span class="precio-actual" id="previa-precio"></span>
+          <span class="precio-original" id="previa-precio-orig"></span>
+          <span class="precio-ahorro" id="previa-ahorro"></span>
+        </div>
+        <div class="previa-divider"></div>
+        <p class="previa-desc-label"><i class="fa fa-book-open"></i> Acerca de este libro</p>
+        <p class="previa-resena" id="previa-resena"></p>
+        <div class="previa-acciones">
+          <button class="btn-agregar previa-btn-agregar" id="previa-btn-agregar">
+            <i class="fa fa-cart-plus"></i> Agregar al carrito
+          </button>
+          <button class="btn-ghost previa-btn-ayuda" onclick="abrirAyuda()">
+            <i class="fab fa-whatsapp"></i> Preguntar por este libro
+          </button>
+        </div>
+        <div class="previa-digital-note">
+          <i class="fa fa-bolt"></i> Entrega digital inmediata tras confirmar pago
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN FLOTANTE AYUDA -->
+  <div class="help-bubble" id="helpBubble" onclick="toggleAyuda()">
+    <i class="fab fa-whatsapp"></i>
+    <span class="help-label">¿Necesitas ayuda?</span>
+  </div>
+
+  <!-- MENÚ AYUDA -->
+  <div class="help-menu" id="helpMenu">
+    <div class="help-menu-header">
+      <i class="fab fa-whatsapp" style="color:#25d366;font-size:20px"></i>
+      <div>
+        <p class="help-menu-title">Librería Digital</p>
+        <p class="help-menu-sub">¿En qué podemos ayudarte?</p>
+      </div>
+      <button onclick="toggleAyuda()" style="background:none;border:none;cursor:pointer;color:#999;font-size:16px;margin-left:auto"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="help-opciones">
+      <button class="help-opcion" onclick="enviarAyuda('solicitar')">
+        <span class="help-opcion-icon">📚</span>
+        <div><strong>Solicitar un libro</strong><p>¿No encontraste el que buscas?</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button class="help-opcion" onclick="enviarAyuda('duda')">
+        <span class="help-opcion-icon">❓</span>
+        <div><strong>Tengo una duda</strong><p>Resuelve tus preguntas</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button class="help-opcion" onclick="enviarAyuda('pago')">
+        <span class="help-opcion-icon">💳</span>
+        <div><strong>Información de pago</strong><p>Métodos disponibles</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button class="help-opcion" onclick="enviarAyuda('entrega')">
+        <span class="help-opcion-icon">📥</span>
+        <div><strong>¿Cómo recibo mi libro?</strong><p>Proceso de entrega digital</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button class="help-opcion" onclick="enviarAyuda('promo')">
+        <span class="help-opcion-icon">🎁</span>
+        <div><strong>Promociones y descuentos</strong><p>Ofertas disponibles</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- CHECKOUT MODAL -->
   <div class="modal-overlay" id="checkoutOverlay" onclick="cerrarCheckout()"></div>
   <div class="modal" id="checkoutModal" style="width:440px">
@@ -197,6 +280,7 @@
       <div class="field-group">
         <label>Contraseña</label>
         <input type="password" id="adminPass" placeholder="Ingresa la contraseña" onkeydown="if(event.key==='Enter') verificarLogin()" />
+        <p class="login-hint">Contraseña por defecto: <strong>admin123</strong></p>
       </div>
       <p class="login-error" id="loginError" style="display:none"><i class="fa fa-circle-exclamation"></i> Contraseña incorrecta</p>
       <button class="btn-primary" style="width:100%;margin-top:8px" onclick="verificarLogin()">
@@ -260,6 +344,10 @@
                 <option value="best">Clásico</option>
               </select>
             </div>
+          </div>
+          <div class="field-group">
+            <label>Reseña / Descripción del libro</label>
+            <textarea id="f-resena" placeholder="Breve descripción de qué trata el libro (2-4 líneas)..." rows="3" style="padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;resize:vertical;transition:border .2s;color:var(--text);" onfocus="this.style.borderColor='var(--amber)'" onblur="this.style.borderColor='var(--border)'"></textarea>
           </div>
           <div class="form-preview">
             <img id="img-preview" src="" alt="" style="display:none" />
@@ -335,5 +423,4 @@
 
   <script src="script.js"></script>
 </body>
-
 </html>
