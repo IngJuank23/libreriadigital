@@ -20,12 +20,10 @@
           <span class="logo-sub">Digital</span>
         </div>
       </div>
-
       <div class="search-bar">
         <i class="fa fa-search search-icon"></i>
         <input type="text" id="searchInput" placeholder="Buscar por título, autor o categoría…" oninput="filtrarLibros()" />
       </div>
-
       <div class="header-actions">
         <button class="admin-btn" onclick="abrirLogin()" title="Panel Admin">
           <i class="fa fa-user-shield"></i>
@@ -36,7 +34,6 @@
         </button>
       </div>
     </div>
-
     <nav class="nav-bar">
       <a href="#">Inicio</a>
       <a href="#">Novedades</a>
@@ -56,7 +53,7 @@
       <p class="hero-desc">Miles de títulos seleccionados. Entrega rápida. Los mejores precios.</p>
       <div class="hero-cta">
         <button class="btn-primary" onclick="scrollCatalogo()">Explorar catálogo</button>
-        <button class="btn-ghost">Ver ofertas</button>
+        <button class="btn-ghost" onclick="window.location.href='ofertas.html'">Ver ofertas</button>
       </div>
     </div>
     <div class="hero-visual">
@@ -98,10 +95,7 @@
         </select>
       </div>
     </div>
-
-    <div class="grid" id="grid-libros">
-      <!-- Tarjetas generadas por JS -->
-    </div>
+    <div class="grid" id="grid-libros"></div>
   </section>
 
   <!-- CARRITO LATERAL -->
@@ -119,21 +113,10 @@
       </div>
     </div>
     <div class="carrito-footer" id="carritoFooter" style="display:none">
-      <div class="subtotal-row">
-        <span>Subtotal</span>
-        <span id="subtotal">$0.00</span>
-      </div>
-      <div class="subtotal-row">
-        <span>Envío</span>
-        <span id="envio-txt">Gratis</span>
-      </div>
-      <div class="subtotal-row total-row">
-        <span>Total</span>
-        <span id="total">$0.00</span>
-      </div>
-      <button class="btn-checkout" onclick="checkout()">
-        Proceder al pago <i class="fa fa-arrow-right"></i>
-      </button>
+      <div class="subtotal-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+      <div class="subtotal-row"><span>Envío</span><span id="envio-txt">Gratis</span></div>
+      <div class="subtotal-row total-row"><span>Total</span><span id="total">$0.00</span></div>
+      <button class="btn-checkout" onclick="checkout()">Proceder al pago <i class="fa fa-arrow-right"></i></button>
       <button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar carrito</button>
     </div>
   </aside>
@@ -228,37 +211,19 @@
       <button class="modal-close" onclick="cerrarCheckout()"><i class="fa fa-times"></i></button>
     </div>
     <div class="modal-body">
-
       <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px">
         Completa tus datos y te enviaremos el pedido por WhatsApp. Nosotros te responderemos con los datos de pago.
       </p>
-
       <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="field-group">
-          <label>Tu nombre completo *</label>
-          <input type="text" id="co-nombre" placeholder="Ej: Juan García" />
-        </div>
-        <div class="field-group">
-          <label>Tu número de WhatsApp *</label>
-          <input type="tel" id="co-telefono" placeholder="Ej: 5512345678" />
-        </div>
-        <div class="field-group">
-          <label>Ciudad / Estado</label>
-          <input type="text" id="co-ciudad" placeholder="Ej: Ciudad de México" />
-        </div>
-        <div class="field-group">
-          <label>Nota adicional (opcional)</label>
-          <input type="text" id="co-nota" placeholder="Ej: Envío urgente, etc." />
-        </div>
+        <div class="field-group"><label>Tu nombre completo *</label><input type="text" id="co-nombre" placeholder="Ej: Juan García" /></div>
+        <div class="field-group"><label>Tu número de WhatsApp *</label><input type="tel" id="co-telefono" placeholder="Ej: 5512345678" /></div>
+        <div class="field-group"><label>Ciudad / Estado</label><input type="text" id="co-ciudad" placeholder="Ej: Ciudad de México" /></div>
+        <div class="field-group"><label>Nota adicional (opcional)</label><input type="text" id="co-nota" placeholder="Ej: Consulta, etc." /></div>
       </div>
-
-      <!-- Resumen rápido -->
       <div class="checkout-resumen" id="checkout-resumen"></div>
-
       <p id="co-error" style="display:none;color:#e53e3e;font-size:13px;margin-top:8px">
         <i class="fa fa-circle-exclamation"></i> Por favor completa tu nombre y WhatsApp
       </p>
-
       <button class="btn-whatsapp" onclick="enviarPedidoWhatsapp()">
         <i class="fab fa-whatsapp"></i> Enviar pedido por WhatsApp
       </button>
@@ -301,13 +266,11 @@
       <button class="modal-close light" onclick="cerrarAdmin()"><i class="fa fa-times"></i></button>
     </div>
     <div class="admin-body">
-
       <div class="admin-stats">
         <div class="stat-card"><i class="fa fa-book"></i><div><span id="stat-total">0</span><p>Libros totales</p></div></div>
         <div class="stat-card"><i class="fa fa-tag"></i><div><span id="stat-precio">$0</span><p>Precio promedio</p></div></div>
         <div class="stat-card"><i class="fa fa-list"></i><div><span id="stat-cats">0</span><p>Categorías</p></div></div>
       </div>
-
       <div class="admin-form-section">
         <h3 id="form-titulo-admin"><i class="fa fa-plus-circle"></i> Agregar nuevo libro</h3>
         <div class="admin-form">
@@ -357,7 +320,6 @@
           </div>
         </div>
       </div>
-
       <div class="admin-table-section">
         <div class="admin-table-header">
           <h3><i class="fa fa-table-list"></i> Libros en catálogo</h3>
@@ -370,7 +332,6 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -422,5 +383,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
