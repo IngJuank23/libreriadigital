@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ofertas Especiales — Librería Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rojo: #c0392b;
+      --rojo-vivo: #e74c3c;
+      --rojo-claro: #fff5f5;
+      --dorado: #d4a853;
+      --dark: #1a0a0a;
+      --cream: #fdf8f0;
+      --text: #2c1810;
+      --text-muted: #7a6a5a;
+      --border: #e8ddd0;
+      --amber: #c8860a;
+      --shadow: 0 4px 24px rgba(192,57,43,.12);
+      --radius: 12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
+
+    /* ===== HEADER ===== */
+    header {
+      background: var(--dark);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,.4);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+    .logo-icon { font-size: 30px; color: var(--dorado); }
+    .logo-main { font-family: 'Playfair Display', serif; font-size: 18px; color: white; font-weight: 700; display: block; line-height: 1.1; }
+    .logo-sub { font-size: 10px; color: var(--dorado); letter-spacing: 3px; text-transform: uppercase; display: block; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .back-btn {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #c8b89a;
+      padding: 9px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      display: flex; align-items: center; gap: 8px;
+      transition: all .2s;
+    }
+    .back-btn:hover { background: rgba(255,255,255,.15); color: white; }
+    .cart-btn {
+      position: relative;
+      background: var(--rojo-vivo);
+      border: none; color: white;
+      width: 44px; height: 44px;
+      border-radius: 10px; cursor: pointer;
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .cart-btn:hover { background: #c0392b; transform: scale(1.05); }
+    .cart-badge {
+      position: absolute; top: -6px; right: -6px;
+      background: var(--dorado); color: white;
+      font-size: 10px; font-weight: 700;
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--dark);
+    }
+
+    /* ===== HERO OFERTAS ===== */
+    .oferta-hero {
+      background: linear-gradient(135deg, #1a0a0a 0%, #4a0a0a 50%, #7a1a0a 100%);
+      padding: 60px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .oferta-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23e74c3c' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-eyebrow {
+      font-size: 11px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--dorado);
+      margin-bottom: 12px; position: relative;
+    }
+    .hero-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 6vw, 64px);
+      color: white; line-height: 1.1;
+      margin-bottom: 16px; position: relative;
+    }
+    .hero-titulo em { color: var(--rojo-vivo); font-style: italic; }
+    .hero-sub {
+      color: #c8b89a; font-size: 16px;
+      margin-bottom: 36px; position: relative;
+    }
+
+    /* COUNTDOWN */
+    .countdown-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(0,0,0,.4);
+      border: 1px solid rgba(231,76,60,.3);
+      border-radius: 16px;
+      padding: 20px 32px;
+      position: relative;
+      backdrop-filter: blur(8px);
+    }
+    .countdown-label {
+      font-size: 11px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--rojo-vivo);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .countdown-label i { animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .countdown {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .cd-unit {
+      display: flex; flex-direction: column; align-items: center;
+      background: rgba(255,255,255,.05);
+      border-radius: 10px;
+      padding: 10px 16px;
+      min-width: 64px;
+    }
+    .cd-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; font-weight: 700;
+      color: white; line-height: 1;
+    }
+    .cd-lbl { font-size: 10px; color: #7a6a5a; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+    .cd-sep { font-size: 28px; color: var(--rojo-vivo); font-weight: 700; margin-bottom: 16px; }
+
+    /* ===== BADGE OFERTA ===== */
+    .oferta-badge {
+      background: var(--rojo-vivo);
+      color: white;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 8px; border-radius: 20px;
+      letter-spacing: 1px; text-transform: uppercase;
+      position: absolute; top: 12px; left: 12px;
+      z-index: 2;
+      animation: pulseRed 2s infinite;
+    }
+    @keyframes pulseRed {
+      0%,100% { box-shadow: 0 0 0 0 rgba(231,76,60,.4); }
+      50% { box-shadow: 0 0 0 8px rgba(231,76,60,0); }
+    }
+
+    /* ===== GRID OFERTAS ===== */
+    .ofertas-section { padding: 50px 40px; }
+    .section-header { text-align: center; margin-bottom: 40px; }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; color: var(--dark);
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .section-header h2 i { color: var(--rojo-vivo); }
+    .section-header p { color: var(--text-muted); margin-top: 8px; font-size: 15px; }
+
+    .grid-ofertas {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .oferta-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .3s, box-shadow .3s;
+      position: relative;
+      border: 2px solid transparent;
+    }
+    .oferta-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(192,57,43,.2);
+      border-color: rgba(231,76,60,.2);
+    }
+
+    .oferta-img-wrap {
+      position: relative; height: 240px;
+      background: #1a0a0a; overflow: hidden;
+    }
+    .oferta-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s; filter: brightness(.95);
+    }
+    .oferta-card:hover .oferta-img-wrap img { transform: scale(1.06); filter: brightness(1); }
+
+    .descuento-tag {
+      position: absolute; top: 12px; right: 12px;
+      background: var(--rojo-vivo); color: white;
+      font-size: 13px; font-weight: 800;
+      padding: 4px 10px; border-radius: 8px;
+      z-index: 2;
+    }
+
+    .oferta-info { padding: 16px; }
+    .oferta-cat {
+      font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rojo-vivo);
+      font-weight: 600; margin-bottom: 4px;
+    }
+    .oferta-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px; color: var(--dark);
+      line-height: 1.3; margin-bottom: 4px;
+    }
+    .oferta-autor { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+    .oferta-precios {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .precio-oferta { font-size: 22px; font-weight: 800; color: var(--rojo-vivo); }
+    .precio-antes {
+      font-size: 13px; color: var(--text-muted);
+      text-decoration: line-through;
+    }
+    .precio-ahorro {
+      font-size: 11px; color: #38a169;
+      background: #f0fff4; padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .btn-oferta {
+      width: 100%;
+      background: var(--rojo-vivo);
+      color: white; border: none;
+      padding: 11px; border-radius: 8px;
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all .2s;
+    }
+    .btn-oferta:hover { background: #c0392b; transform: translateY(-1px); }
+    .btn-oferta.added { background: #38a169; }
+
+    /* BANNER INFERIOR */
+    .oferta-banner {
+      background: linear-gradient(135deg, var(--rojo) 0%, #7a1a0a 100%);
+      margin: 0 40px 40px;
+      border-radius: 16px;
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .oferta-banner-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; color: white; margin-bottom: 6px;
+    }
+    .oferta-banner-text p { color: rgba(255,255,255,.7); font-size: 14px; }
+    .btn-banner {
+      background: white; color: var(--rojo);
+      border: none; padding: 12px 28px;
+      border-radius: 8px; font-family: 'DM Sans', sans-serif;
+      font-weight: 700; font-size: 14px; cursor: pointer;
+      white-space: nowrap; transition: all .2s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-banner:hover { background: var(--cream); transform: translateY(-2px); }
+
+    /* ===== CARRITO LATERAL ===== */
+    .cart-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 200;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .cart-overlay.active { opacity: 1; pointer-events: all; }
+
+    .carrito-panel {
+      position: fixed; top: 0; right: 0;
+      width: 400px; max-width: 100vw; height: 100vh;
+      background: white; z-index: 201;
+      transform: translateX(110%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+      box-shadow: -8px 0 40px rgba(0,0,0,.15);
+    }
+    .carrito-panel.open { transform: translateX(0); }
+
+    .carrito-header {
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #e8ddd0;
+      background: var(--dark); color: white;
+    }
+    .carrito-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; display: flex; align-items: center; gap: 10px;
+    }
+    .carrito-header h3 i { color: var(--rojo-vivo); }
+    .close-cart {
+      background: none; border: none; color: #c8b89a;
+      font-size: 18px; cursor: pointer; padding: 4px 8px;
+      border-radius: 6px; transition: all .2s;
+    }
+    .close-cart:hover { color: white; background: rgba(255,255,255,.1); }
+
+    .carrito-items { flex: 1; overflow-y: auto; padding: 16px; }
+    .carrito-vacio {
+      text-align: center; padding: 60px 20px; color: #7a6a5a;
+    }
+    .carrito-vacio i { font-size: 48px; color: #e8ddd0; margin-bottom: 16px; display: block; }
+    .carrito-vacio p { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 6px; color: var(--text); }
+
+    .cart-item {
+      display: flex; gap: 12px;
+      padding: 14px 0; border-bottom: 1px solid #e8ddd0;
+      animation: fadeIn .25s ease;
+    }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .cart-item-img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+    .cart-item-info { flex: 1; }
+    .cart-item-titulo { font-family: 'Playfair Display', serif; font-size: 14px; margin-bottom: 4px; line-height: 1.3; }
+    .cart-item-precio { color: var(--rojo-vivo); font-weight: 700; font-size: 15px; }
+    .cart-item-controls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .qty-btn {
+      width: 26px; height: 26px; border-radius: 6px;
+      border: 2px solid #e8ddd0; background: white;
+      cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .15s; color: var(--text);
+    }
+    .qty-btn:hover { border-color: var(--rojo-vivo); color: var(--rojo-vivo); }
+    .qty-num { font-weight: 700; min-width: 20px; text-align: center; font-size: 14px; }
+    .remove-btn {
+      margin-left: auto; background: none; border: none;
+      color: #e53e3e; cursor: pointer; font-size: 13px;
+      padding: 4px; border-radius: 4px; transition: background .15s;
+    }
+    .remove-btn:hover { background: #fff5f5; }
+
+    .carrito-footer {
+      padding: 20px 24px; border-top: 2px solid #e8ddd0;
+      background: #faf7f2;
+    }
+    .subtotal-row {
+      display: flex; justify-content: space-between;
+      font-size: 14px; margin-bottom: 8px; color: #7a6a5a;
+    }
+    .total-row {
+      font-size: 18px; font-weight: 700; color: var(--dark);
+      margin-top: 10px; padding-top: 10px; border-top: 1px solid #e8ddd0;
+    }
+    .btn-checkout {
+      width: 100%; background: var(--rojo-vivo);
+      color: white; border: none; padding: 14px;
+      border-radius: 10px; font-size: 15px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600;
+      cursor: pointer; margin-top: 16px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: background .2s;
+    }
+    .btn-checkout:hover { background: #c0392b; }
+    .btn-vaciar {
+      width: 100%; background: transparent; color: #e53e3e;
+      border: 1px solid #fed7d7; padding: 10px; border-radius: 8px;
+      font-size: 13px; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; margin-top: 8px; transition: background .2s;
+    }
+    .btn-vaciar:hover { background: #fff5f5; }
+
+    /* ===== CHECKOUT MODAL ===== */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.6); z-index: 300;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -60%);
+      width: 440px; max-width: 95vw;
+      background: white; border-radius: 16px;
+      z-index: 301; opacity: 0; pointer-events: none;
+      transition: all .35s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 24px 80px rgba(0,0,0,.25);
+    }
+    .modal.open { opacity: 1; pointer-events: all; transform: translate(-50%,-50%); }
+    .modal-header {
+      padding: 20px 24px; background: var(--dark);
+      border-radius: 16px 16px 0 0;
+      display: flex; align-items: center; justify-content: space-between;
+      color: white;
+    }
+    .modal-header h3 { font-family: 'Playfair Display', serif; font-size: 17px; display: flex; align-items: center; gap: 10px; }
+    .modal-close {
+      background: rgba(255,255,255,.1); border: none; color: #c8b89a;
+      width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center; transition: all .2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,.2); color: white; }
+    .modal-body { padding: 24px; }
+    .field-group { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .field-group label { font-size: 12px; font-weight: 600; color: #7a6a5a; letter-spacing: .5px; text-transform: uppercase; }
+    .field-group input {
+      padding: 10px 14px; border: 2px solid #e8ddd0;
+      border-radius: 8px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--text); transition: border .2s;
+    }
+    .field-group input:focus { outline: none; border-color: var(--rojo-vivo); }
+    .field-group input.error { border-color: #e53e3e; }
+    .checkout-resumen {
+      background: #faf7f2; border: 1px solid #e8ddd0;
+      border-radius: 10px; padding: 14px 16px; margin-top: 16px; font-size: 13px;
+    }
+    .checkout-resumen-titulo { font-weight: 700; color: var(--dark); margin-bottom: 8px; font-family: 'Playfair Display', serif; font-size: 14px; }
+    .checkout-resumen-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #e8ddd0; color: var(--text); }
+    .checkout-resumen-item:last-of-type { border-bottom: none; }
+    .checkout-resumen-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; color: var(--dark); margin-top: 8px; padding-top: 8px; border-top: 2px solid #e8ddd0; }
+    .btn-whatsapp {
+      width: 100%; background: #25d366; color: white; border: none;
+      padding: 14px; border-radius: 10px; font-size: 16px;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; cursor: pointer;
+      margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: background .2s, transform .15s;
+    }
+    .btn-whatsapp:hover { background: #1ebe5a; transform: translateY(-2px); }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--dark); color: white;
+      padding: 12px 24px; border-radius: 30px; font-size: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.25); z-index: 400;
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+      display: flex; align-items: center; gap: 8px;
+      white-space: nowrap; border-left: 3px solid var(--rojo-vivo);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* HELP BUBBLE */
+    .help-bubble {
+      position: fixed; bottom: 28px; right: 28px;
+      background: #25d366; color: white;
+      border-radius: 50px; padding: 14px 20px;
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; z-index: 150;
+      box-shadow: 0 6px 24px rgba(37,211,102,.4);
+      transition: all .3s; font-family: 'DM Sans', sans-serif;
+      font-weight: 600; font-size: 14px;
+    }
+    .help-bubble:hover { background: #1ebe5a; transform: translateY(-3px); }
+    .help-bubble i { font-size: 22px; }
+
+    /* FOOTER */
+    footer { background: var(--dark); color: #c8b89a; padding: 30px 40px; text-align: center; }
+    footer p { font-size: 13px; }
+    footer a { color: var(--dorado); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      header { padding: 12px 20px; }
+      .oferta-hero { padding: 40px 20px; }
+      .ofertas-section { padding: 30px 20px; }
+      .oferta-banner { margin: 0 20px 30px; padding: 24px; }
+      .carrito-panel { width: 100vw; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo" onclick="window.location.href='index.html'">
+      <span class="logo-icon">𝔏</span>
+      <div>
+        <span class="logo-main">Librería</span>
+        <span class="logo-sub">Digital</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="back-btn" onclick="window.location.href='index.html'">
+        <i class="fa fa-arrow-left"></i> Volver al catálogo
+      </button>
+      <button class="cart-btn" onclick="toggleCarrito()">
+        <i class="fa fa-shopping-bag"></i>
+        <span class="cart-badge" id="contador">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="oferta-hero">
+    <p class="hero-eyebrow"><i class="fa fa-fire"></i> &nbsp; Tiempo limitado</p>
+    <h1 class="hero-titulo">Ofertas que<br /><em>no puedes</em><br />dejar pasar</h1>
+    <p class="hero-sub">Precios especiales solo por tiempo limitado. ¡Aprovecha antes de que terminen!</p>
+
+    <div class="countdown-wrap">
+      <p class="countdown-label"><i class="fa fa-circle"></i> La oferta termina en</p>
+      <div class="countdown">
+        <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">Horas</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">Min</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Seg</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID OFERTAS -->
+  <section class="ofertas-section">
+    <div class="section-header">
+      <h2><i class="fa fa-tags"></i> Libros en Oferta</h2>
+      <p>Selección especial con los mejores descuentos de la semana</p>
+    </div>
+    <div class="grid-ofertas" id="grid-ofertas"></div>
+  </section>
+
+  <!-- BANNER FINAL -->
+  <div class="oferta-banner">
+    <div class="oferta-banner-text">
+      <h3>¿Buscas un libro específico?</h3>
+      <p>Tenemos miles de títulos disponibles. Escríbenos y lo conseguimos para ti.</p>
+    </div>
+    <button class="btn-banner" onclick="solicitarLibro()">
+      <i class="fab fa-whatsapp"></i> Solicitar por WhatsApp
+    </button>
+  </div>
+
+  <!-- CARRITO -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCarrito()"></div>
+  <aside class="carrito-panel" id="carritoPanel">
+    <div class="carrito-header">
+      <h3><i class="fa fa-shopping-bag"></i> Tu carrito</h3>
+      <button class="close-cart" onclick="toggleCarrito()"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="carrito-items" id="carritoItems">
+      <div class="carrito-vacio">
+        <i class="fa fa-book-open"></i>
+        <p>Tu carrito está vacío</p>
+        <span>Agrega libros en oferta</span>
+      </div>
+    </div>
+    <div class="carrito-footer" id="carritoFooter" style="display:none">
+      <div class="subtotal-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+      <div class="subtotal-row"><span>Envío</span><span id="envio-txt">Digital — Gratis</span></div>
+      <div class="subtotal-row total-row"><span>Total</span><span id="total">$0.00</span></div>
+      <button class="btn-checkout" onclick="checkout()">Proceder al pago <i class="fa fa-arrow-right"></i></button>
+      <button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar carrito</button>
+    </div>
+  </aside>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkoutOverlay" onclick="cerrarCheckout()"></div>
+  <div class="modal" id="checkoutModal">
+    <div class="modal-header">
+      <h3><i class="fab fa-whatsapp" style="color:#25d366"></i> Confirmar pedido</h3>
+      <button class="modal-close" onclick="cerrarCheckout()"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:#7a6a5a;margin-bottom:18px">Completa tus datos y te enviamos el pedido por WhatsApp. Te responderemos con los datos de pago.</p>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="field-group"><label>Tu nombre completo *</label><input type="text" id="co-nombre" placeholder="Ej: Juan García" /></div>
+        <div class="field-group"><label>Tu número de WhatsApp *</label><input type="tel" id="co-telefono" placeholder="Ej: 5512345678" /></div>
+        <div class="field-group"><label>Ciudad / Estado</label><input type="text" id="co-ciudad" placeholder="Ej: Ciudad de México" /></div>
+        <div class="field-group"><label>Nota (opcional)</label><input type="text" id="co-nota" placeholder="Cualquier comentario..." /></div>
+      </div>
+      <div class="checkout-resumen" id="checkout-resumen"></div>
+      <p id="co-error" style="display:none;color:#e53e3e;font-size:13px;margin-top:8px"><i class="fa fa-circle-exclamation"></i> Por favor completa tu nombre y WhatsApp</p>
+      <button class="btn-whatsapp" onclick="enviarPedidoWhatsapp()"><i class="fab fa-whatsapp"></i> Enviar pedido por WhatsApp</button>
+      <p style="font-size:11px;color:#7a6a5a;text-align:center;margin-top:8px">Se abrirá WhatsApp con tu pedido listo para enviar</p>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- BOTÓN AYUDA -->
+  <div class="help-bubble" onclick="solicitarLibro()">
+    <i class="fab fa-whatsapp"></i>
+    <span>¿Necesitas ayuda?</span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Developed Juan Pariona. Librería Digital &nbsp;|&nbsp; <a href="index.html">← Volver al catálogo</a></p>
+  </footer>
+
+  <script>
+    const WA_NUMBER = "525572866238";
+
+    // ===== LIBROS EN OFERTA =====
+    const ofertasLibros = [
+      {
+        id: 101,
+        titulo: "Las 48 Leyes del Poder",
+        autor: "Robert Greene",
+        precio: 6.99,
+        precioOriginal: 14.99,
+        img: "https://images-na.ssl-images-amazon.com/images/I/51NKhnjhpGL.jpg",
+        categoria: "Negocios",
+        resena: "El clásico sobre el poder y la estrategia. 48 leyes que te enseñarán a moverte con inteligencia en cualquier entorno."
+      },
+      {
+        id: 102,
+        titulo: "El Arte de la Guerra",
+        autor: "Sun Tzu",
+        precio: 3.99,
+        precioOriginal: 9.99,
+        img: "https://images-na.ssl-images-amazon.com/images/I/61AaUEsVaqL.jpg",
+        categoria: "Estrategia",
+        resena: "El tratado estratégico más influyente de todos los tiempos. Sus principios se aplican en negocios, liderazgo y vida diaria."
+      },
+      {
+        id: 103,
+        titulo: "Piense y Hágase Rico",
+        autor: "Napoleon Hill",
+        precio: 4.99,
+        precioOriginal: 11.99,
+        img: "https://images-na.ssl-images-amazon.com/images/I/71UypkUjStL.jpg",
+        categoria: "Negocios",
+        resena: "Los 13 principios que llevaron al éxito a los hombres más ricos del siglo XX. Un clásico de la mentalidad ganadora."
+      },
+      {
+        id: 104,
+        titulo: "Sapiens",
+        autor: "Yuval Noah Harari",
+        precio: 9.99,
+        precioOriginal: 21.99,
+        img: "https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg",
+        categoria: "Historia",
+        resena: "Un viaje por 70,000 años de historia humana. Descubre cómo el Homo sapiens conquistó el planeta."
+      },
+      {
+        id: 105,
+        titulo: "Don Quijote de la Mancha",
+        autor: "Miguel de Cervantes",
+        precio: 3.49,
+        precioOriginal: 8.99,
+        img: "https://images-na.ssl-images-amazon.com/images/I/81BPaFgk6lL.jpg",
+        categoria: "Ficción",
+        resena: "La obra cumbre de la literatura universal. Las aventuras del idealista Don Quijote y su fiel Sancho Panza."
+      },
+      {
+        id: 106,
+        titulo: "Una Breve Historia del Tiempo",
+        autor: "Stephen Hawking",
+        precio: 7.99,
+        precioOriginal: 16.99,
+        img: "https://images-na.ssl-images-amazon.com/images/I/A1xkFZX5k-L.jpg",
+        categoria: "Ciencia",
+        resena: "Hawking nos lleva a explorar el Big Bang, los agujeros negros y los misterios del universo de forma accesible y fascinante."
+      }
+    ];
+
+    let carrito = [];
+
+    // ===== COUNTDOWN =====
+    function iniciarCountdown() {
+      const KEY = "oferta_fin";
+      let fin = localStorage.getItem(KEY);
+      if (!fin || Date.now() > parseInt(fin)) {
+        fin = Date.now() + (24 * 60 * 60 * 1000); // 24 horas
+        localStorage.setItem(KEY, fin);
+      }
+      function tick() {
+        const diff = parseInt(fin) - Date.now();
+        if (diff <= 0) { document.getElementById("cd-h").textContent = "00"; document.getElementById("cd-m").textContent = "00"; document.getElementById("cd-s").textContent = "00"; return; }
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById("cd-h").textContent = String(h).padStart(2,"0");
+        document.getElementById("cd-m").textContent = String(m).padStart(2,"0");
+        document.getElementById("cd-s").textContent = String(s).padStart(2,"0");
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    // ===== RENDER GRID =====
+    function renderGrid() {
+      const grid = document.getElementById("grid-ofertas");
+      grid.innerHTML = ofertasLibros.map(l => {
+        const ahorro = (((l.precioOriginal - l.precio) / l.precioOriginal) * 100).toFixed(0);
+        const enCarrito = carrito.find(i => i.id === l.id);
+        return `
+          <div class="oferta-card">
+            <div class="oferta-badge">🔥 OFERTA</div>
+            <div class="oferta-img-wrap">
+              <img src="${l.img}" alt="${l.titulo}" loading="lazy" onerror="this.src='https://via.placeholder.com/220x240/1a0a0a/d4a853?text=📚'" />
+              <div class="descuento-tag">-${ahorro}%</div>
+            </div>
+            <div class="oferta-info">
+              <p class="oferta-cat">${l.categoria}</p>
+              <h3 class="oferta-titulo">${l.titulo}</h3>
+              <p class="oferta-autor">${l.autor}</p>
+              <div class="oferta-precios">
+                <span class="precio-oferta">$${l.precio.toFixed(2)}</span>
+                <span class="precio-antes">$${l.precioOriginal.toFixed(2)}</span>
+                <span class="precio-ahorro">Ahorras $${(l.precioOriginal - l.precio).toFixed(2)}</span>
+              </div>
+              <button class="btn-oferta ${enCarrito ? 'added' : ''}" id="btn-${l.id}" onclick="agregarCarrito(${l.id}, this)">
+                <i class="fa ${enCarrito ? 'fa-check' : 'fa-cart-plus'}"></i>
+                ${enCarrito ? 'Agregado' : 'Agregar al carrito'}
+              </button>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    // ===== CARRITO =====
+    function agregarCarrito(id, btn) {
+      const libro = ofertasLibros.find(l => l.id === id);
+      if (!libro) return;
+      const existe = carrito.find(i => i.id === id);
+      if (existe) { existe.cantidad++; }
+      else { carrito.push({ ...libro, cantidad: 1 }); }
+      if (btn) { btn.classList.add("added"); btn.innerHTML = `<i class="fa fa-check"></i> Agregado`; }
+      actualizarCarritoUI();
+      mostrarToast(`🔥 "${libro.titulo}" agregado`);
+      animarBadge();
+    }
+
+    function quitarDelCarrito(id) {
+      carrito = carrito.filter(i => i.id !== id);
+      const btn = document.getElementById(`btn-${id}`);
+      if (btn) { btn.classList.remove("added"); btn.innerHTML = `<i class="fa fa-cart-plus"></i> Agregar al carrito`; }
+      actualizarCarritoUI();
+    }
+
+    function cambiarCantidad(id, delta) {
+      const item = carrito.find(i => i.id === id);
+      if (!item) return;
+      item.cantidad += delta;
+      if (item.cantidad <= 0) quitarDelCarrito(id);
+      else actualizarCarritoUI();
+    }
+
+    function vaciarCarrito() {
+      carrito.forEach(item => {
+        const btn = document.getElementById(`btn-${item.id}`);
+        if (btn) { btn.classList.remove("added"); btn.innerHTML = `<i class="fa fa-cart-plus"></i> Agregar al carrito`; }
+      });
+      carrito = [];
+      actualizarCarritoUI();
+      mostrarToast("🗑️ Carrito vaciado");
+    }
+
+    function actualizarCarritoUI() {
+      const totalItems = carrito.reduce((s, i) => s + i.cantidad, 0);
+      const subtotal = carrito.reduce((s, i) => s + i.precio * i.cantidad, 0);
+      const total = subtotal;
+      document.getElementById("contador").textContent = totalItems;
+      const itemsEl = document.getElementById("carritoItems");
+      const footerEl = document.getElementById("carritoFooter");
+      if (carrito.length === 0) {
+        itemsEl.innerHTML = `<div class="carrito-vacio"><i class="fa fa-book-open"></i><p>Tu carrito está vacío</p><span>Agrega libros en oferta</span></div>`;
+        footerEl.style.display = "none"; return;
+      }
+      itemsEl.innerHTML = carrito.map(item => `
+        <div class="cart-item">
+          <img class="cart-item-img" src="${item.img}" alt="${item.titulo}" onerror="this.src='https://via.placeholder.com/60x80/1a0a0a/d4a853?text=📚'" />
+          <div class="cart-item-info">
+            <p class="cart-item-titulo">${item.titulo}</p>
+            <p class="cart-item-precio">$${(item.precio * item.cantidad).toFixed(2)}</p>
+            <div class="cart-item-controls">
+              <button class="qty-btn" onclick="cambiarCantidad(${item.id}, -1)">−</button>
+              <span class="qty-num">${item.cantidad}</span>
+              <button class="qty-btn" onclick="cambiarCantidad(${item.id}, +1)">+</button>
+              <button class="remove-btn" onclick="quitarDelCarrito(${item.id})"><i class="fa fa-trash"></i></button>
+            </div>
+          </div>
+        </div>`).join("");
+      footerEl.style.display = "block";
+      document.getElementById("subtotal").textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById("total").textContent = `$${total.toFixed(2)}`;
+    }
+
+    function toggleCarrito() {
+      document.getElementById("carritoPanel").classList.toggle("open");
+      document.getElementById("cartOverlay").classList.toggle("active");
+      document.body.style.overflow = document.getElementById("carritoPanel").classList.contains("open") ? "hidden" : "";
+    }
+
+    // ===== CHECKOUT =====
+    function checkout() {
+      if (carrito.length === 0) return;
+      const subtotal = carrito.reduce((s, i) => s + i.precio * i.cantidad, 0);
+      let html = `<p class="checkout-resumen-titulo">🔥 Resumen — Ofertas Especiales</p>`;
+      carrito.forEach(item => {
+        html += `<div class="checkout-resumen-item"><span>${item.cantidad}× ${item.titulo}</span><span>$${(item.precio * item.cantidad).toFixed(2)}</span></div>`;
+      });
+      html += `<div class="checkout-resumen-total"><span>Total</span><span>$${subtotal.toFixed(2)}</span></div>`;
+      document.getElementById("checkout-resumen").innerHTML = html;
+      ["co-nombre","co-telefono","co-ciudad","co-nota"].forEach(id => { document.getElementById(id).value = ""; document.getElementById(id).classList.remove("error"); });
+      document.getElementById("co-error").style.display = "none";
+      document.getElementById("checkoutModal").classList.add("open");
+      document.getElementById("checkoutOverlay").classList.add("active");
+      document.body.style.overflow = "hidden";
+      setTimeout(() => document.getElementById("co-nombre").focus(), 150);
+    }
+
+    function cerrarCheckout() {
+      document.getElementById("checkoutModal").classList.remove("open");
+      document.getElementById("checkoutOverlay").classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    function enviarPedidoWhatsapp() {
+      const nombre   = document.getElementById("co-nombre").value.trim();
+      const telefono = document.getElementById("co-telefono").value.trim();
+      const ciudad   = document.getElementById("co-ciudad").value.trim();
+      const nota     = document.getElementById("co-nota").value.trim();
+      let error = false;
+      if (!nombre)   { document.getElementById("co-nombre").classList.add("error"); error = true; }
+      if (!telefono) { document.getElementById("co-telefono").classList.add("error"); error = true; }
+      if (error) { document.getElementById("co-error").style.display = "block"; return; }
+
+      const subtotal = carrito.reduce((s, i) => s + i.precio * i.cantidad, 0);
+      const ahora = new Date();
+      const fecha = ahora.toLocaleDateString("es-MX", { day:"2-digit", month:"2-digit", year:"numeric" });
+      const hora  = ahora.toLocaleTimeString("es-MX", { hour:"2-digit", minute:"2-digit" });
+
+      let msg = "🔥 *PEDIDO — OFERTAS ESPECIALES — Librería Digital*\n";
+      msg += "━━━━━━━━━━━━━━━━━━━━\n";
+      msg += `👤 *Cliente:* ${nombre}\n`;
+      msg += `📱 *WhatsApp:* ${telefono}\n`;
+      if (ciudad) msg += `📍 *Ciudad:* ${ciudad}\n`;
+      msg += `📅 *Fecha:* ${fecha} — ${hora}\n`;
+      msg += "━━━━━━━━━━━━━━━━━━━━\n";
+      msg += "📚 *DETALLE DEL PEDIDO:*\n\n";
+      carrito.forEach((item, i) => {
+        msg += `${i+1}️⃣ *${item.titulo}*\n`;
+        msg += `   ✍️ ${item.autor}\n`;
+        msg += `   🔢 Cant: ${item.cantidad} × $${item.precio.toFixed(2)} = *$${(item.precio * item.cantidad).toFixed(2)}*\n\n`;
+      });
+      msg += "━━━━━━━━━━━━━━━━━━━━\n";
+      msg += `💰 *TOTAL A PAGAR: $${subtotal.toFixed(2)}*\n`;
+      msg += "📥 *Entrega:* Digital inmediata\n";
+      msg += "━━━━━━━━━━━━━━━━━━━━\n";
+      if (nota) msg += `📝 Nota: ${nota}\n━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += "¡Hola! Quiero aprovechar estas ofertas especiales. Quedo en espera de sus datos de pago. 😊🔥";
+
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+      cerrarCheckout();
+      mostrarToast("✅ ¡Pedido enviado por WhatsApp!");
+    }
+
+    // ===== SOLICITAR LIBRO =====
+    function solicitarLibro() {
+      const msg = "Hola 👋, quisiera solicitar un libro o tengo una consulta:\n\n📖 *Título:* \n✍️ *Autor (si lo sé):* \n\n¿Pueden ayudarme?";
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+
+    // ===== TOAST & BADGE =====
+    function mostrarToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+    function animarBadge() {
+      const b = document.getElementById("contador");
+      b.style.transform = "scale(1.5)";
+      setTimeout(() => b.style.transform = "scale(1)", 200);
+    }
+
+    // ===== INIT =====
+    document.addEventListener("DOMContentLoaded", () => {
+      renderGrid();
+      iniciarCountdown();
+    });
+  </script>
+</body>
+</html>
