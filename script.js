@@ -403,7 +403,7 @@ function cerrarPrevia() {
 // PANEL DE ADMINISTRACIÓN
 // ===========================
 
-const ADMIN_PASS = "admin123"; // ← Cambia aquí tu contraseña
+const ADMIN_PASS = "97030625"; // ← Cambia aquí tu contraseña
 
 // ----- LOGIN -----
 function abrirLogin() {
@@ -771,3 +771,4 @@ function enviarAyuda(tipo) {
   const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   window.open(url, "_blank");
 }
+
