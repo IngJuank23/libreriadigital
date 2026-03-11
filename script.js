@@ -346,7 +346,7 @@ function verDetalle(id) {
 // PANEL DE ADMINISTRACIÓN
 // ===========================
 
-const ADMIN_PASS = "admin123"; // ← Cambia aquí tu contraseña
+const ADMIN_PASS = "97030625"; // ← Cambia aquí tu contraseña
 
 // ----- LOGIN -----
 function abrirLogin() {
@@ -662,4 +662,5 @@ function enviarPedidoWhatsapp() {
 
   cerrarCheckout();
   mostrarToast("✅ ¡Pedido enviado por WhatsApp!");
+
 }
