@@ -450,7 +450,7 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* HELP BUBBLE */
+    /* ===== HELP BUBBLE (igual que index.html) ===== */
     .help-bubble {
       position: fixed; bottom: 28px; right: 28px;
       background: #25d366; color: white;
@@ -460,9 +460,48 @@
       box-shadow: 0 6px 24px rgba(37,211,102,.4);
       transition: all .3s; font-family: 'DM Sans', sans-serif;
       font-weight: 600; font-size: 14px;
+      user-select: none;
     }
     .help-bubble:hover { background: #1ebe5a; transform: translateY(-3px); }
     .help-bubble i { font-size: 22px; }
+
+    /* ===== MENÚ AYUDA ===== */
+    .help-menu {
+      position: fixed; bottom: 90px; right: 28px;
+      width: 320px; background: white;
+      border-radius: 16px;
+      box-shadow: 0 12px 50px rgba(0,0,0,.18);
+      z-index: 149;
+      opacity: 0; pointer-events: none;
+      transform: translateY(16px) scale(.97);
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    .help-menu.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+    .help-menu-header {
+      background: var(--dark); padding: 16px 18px;
+      display: flex; align-items: center; gap: 12px; color: white;
+    }
+    .help-menu-title { font-weight: 700; font-size: 14px; margin: 0; }
+    .help-menu-sub { font-size: 11px; color: #7a6a5a; margin: 2px 0 0; }
+    .help-opciones { padding: 8px 0; }
+    .help-opcion {
+      width: 100%; background: none; border: none;
+      padding: 12px 18px;
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer; text-align: left;
+      transition: background .15s;
+      font-family: 'DM Sans', sans-serif;
+      border-bottom: 1px solid var(--border);
+    }
+    .help-opcion:last-child { border-bottom: none; }
+    .help-opcion:hover { background: var(--cream); }
+    .help-opcion-icon { font-size: 22px; flex-shrink: 0; }
+    .help-opcion div { flex: 1; }
+    .help-opcion strong { font-size: 13px; color: var(--dark); display: block; margin-bottom: 2px; }
+    .help-opcion p { font-size: 11px; color: var(--text-muted); margin: 0; }
+    .help-opcion .fa-chevron-right { color: var(--border); font-size: 11px; flex-shrink: 0; transition: color .15s; }
+    .help-opcion:hover .fa-chevron-right { color: var(--amber); }
 
     /* FOOTER */
     footer { background: var(--dark); color: #c8b89a; padding: 30px 40px; text-align: center; }
@@ -476,6 +515,8 @@
       .ofertas-section { padding: 30px 20px; }
       .oferta-banner { margin: 0 20px 30px; padding: 24px; }
       .carrito-panel { width: 100vw; }
+      .help-menu { right: 16px; width: calc(100vw - 32px); }
+      .help-bubble { bottom: 16px; right: 16px; }
     }
   </style>
 </head>
@@ -534,7 +575,7 @@
       <h3>¿Buscas un libro específico?</h3>
       <p>Tenemos miles de títulos disponibles. Escríbenos y lo conseguimos para ti.</p>
     </div>
-    <button class="btn-banner" onclick="solicitarLibro()">
+    <button class="btn-banner" onclick="enviarAyuda('solicitar')">
       <i class="fab fa-whatsapp"></i> Solicitar por WhatsApp
     </button>
   </div>
@@ -587,10 +628,50 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <!-- BOTÓN AYUDA -->
-  <div class="help-bubble" onclick="solicitarLibro()">
+  <!-- BOTÓN AYUDA — ahora con menú desplegable -->
+  <div class="help-bubble" id="helpBubble" onclick="toggleAyuda()">
     <i class="fab fa-whatsapp"></i>
     <span>¿Necesitas ayuda?</span>
+  </div>
+
+  <div class="help-menu" id="helpMenu">
+    <div class="help-menu-header">
+      <i class="fab fa-whatsapp" style="color:#25d366;font-size:20px;flex-shrink:0"></i>
+      <div style="flex:1">
+        <p class="help-menu-title">Librería Digital</p>
+        <p class="help-menu-sub">¿En qué podemos ayudarte?</p>
+      </div>
+      <button onclick="toggleAyuda()" style="background:none;border:none;cursor:pointer;color:#c8b89a;font-size:16px;padding:4px 8px">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+    <div class="help-opciones">
+      <button class="help-opcion" onclick="enviarAyuda('solicitar')">
+        <span class="help-opcion-icon">📚</span>
+        <div><strong>Solicitar un libro</strong><p>¿No encontraste el que buscas?</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button class="help-opcion" onclick="enviarAyuda('duda')">
+        <span class="help-opcion-icon">❓</span>
+        <div><strong>Tengo una duda</strong><p>Resuelve tus preguntas</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button class="help-opcion" onclick="enviarAyuda('pago')">
+        <span class="help-opcion-icon">💳</span>
+        <div><strong>Información de pago</strong><p>Métodos disponibles</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button class="help-opcion" onclick="enviarAyuda('entrega')">
+        <span class="help-opcion-icon">📥</span>
+        <div><strong>¿Cómo recibo mi libro?</strong><p>Proceso de entrega digital</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button class="help-opcion" onclick="enviarAyuda('promo')">
+        <span class="help-opcion-icon">🎁</span>
+        <div><strong>Promociones y descuentos</strong><p>Ofertas disponibles</p></div>
+        <i class="fa fa-chevron-right"></i>
+      </button>
+    </div>
   </div>
 
   <!-- FOOTER -->
@@ -667,12 +748,12 @@
 
     let carrito = [];
 
-    // ===== COUNTDOWN =====
+    // ===== COUNTDOWN (sin cambios) =====
     function iniciarCountdown() {
       const KEY = "oferta_fin";
       let fin = localStorage.getItem(KEY);
       if (!fin || Date.now() > parseInt(fin)) {
-        fin = Date.now() + (24 * 60 * 60 * 1000); // 24 horas
+        fin = Date.now() + (24 * 60 * 60 * 1000);
         localStorage.setItem(KEY, fin);
       }
       function tick() {
@@ -689,7 +770,7 @@
       setInterval(tick, 1000);
     }
 
-    // ===== RENDER GRID =====
+    // ===== RENDER GRID (sin cambios) =====
     function renderGrid() {
       const grid = document.getElementById("grid-ofertas");
       grid.innerHTML = ofertasLibros.map(l => {
@@ -720,7 +801,7 @@
       }).join("");
     }
 
-    // ===== CARRITO =====
+    // ===== CARRITO (sin cambios) =====
     function agregarCarrito(id, btn) {
       const libro = ofertasLibros.find(l => l.id === id);
       if (!libro) return;
@@ -794,7 +875,7 @@
       document.body.style.overflow = document.getElementById("carritoPanel").classList.contains("open") ? "hidden" : "";
     }
 
-    // ===== CHECKOUT =====
+    // ===== CHECKOUT (sin cambios) =====
     function checkout() {
       if (carrito.length === 0) return;
       const subtotal = carrito.reduce((s, i) => s + i.precio * i.cantidad, 0);
@@ -858,13 +939,31 @@
       mostrarToast("✅ ¡Pedido enviado por WhatsApp!");
     }
 
-    // ===== SOLICITAR LIBRO =====
-    function solicitarLibro() {
-      const msg = "Hola 👋, quisiera solicitar un libro o tengo una consulta:\n\n📖 *Título:* \n✍️ *Autor (si lo sé):* \n\n¿Pueden ayudarme?";
+    // ===== MENÚ AYUDA (nuevo) =====
+    function toggleAyuda() {
+      document.getElementById("helpMenu").classList.toggle("open");
+    }
+
+    document.addEventListener("click", e => {
+      const menu   = document.getElementById("helpMenu");
+      const bubble = document.getElementById("helpBubble");
+      if (menu && bubble && !menu.contains(e.target) && !bubble.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+
+    function enviarAyuda(tipo) {
+      document.getElementById("helpMenu").classList.remove("open");
+      let msg = "";
+      if (tipo === "solicitar") msg = "Hola 👋, quisiera solicitar un libro que no encontré en el catálogo:\n\n📖 *Título:* \n✍️ *Autor (si lo sé):* \n\n¿Pueden conseguirlo?";
+      else if (tipo === "duda")    msg = "Hola 👋, tengo una duda sobre la Librería Digital:\n\n💬 *Mi pregunta:* ";
+      else if (tipo === "pago")    msg = "Hola 👋, quisiera saber los métodos de pago disponibles. ¿Con qué opciones cuentan?";
+      else if (tipo === "entrega") msg = "Hola 👋, quisiera saber cómo recibo mi libro digital después de confirmar el pago. ¿Cuál es el proceso?";
+      else if (tipo === "promo")   msg = "Hola 👋, quisiera saber si tienen promociones o descuentos disponibles actualmente. 🎁";
       window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     }
 
-    // ===== TOAST & BADGE =====
+    // ===== TOAST & BADGE (sin cambios) =====
     function mostrarToast(msg) {
       const toast = document.getElementById("toast");
       toast.textContent = msg;
@@ -878,7 +977,7 @@
       setTimeout(() => b.style.transform = "scale(1)", 200);
     }
 
-    // ===== INIT =====
+    // ===== INIT (sin cambios) =====
     document.addEventListener("DOMContentLoaded", () => {
       renderGrid();
       iniciarCountdown();
