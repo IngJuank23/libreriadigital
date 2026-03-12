@@ -34,28 +34,15 @@
         </button>
       </div>
     </div>
-    <nav class="nav-bar" id="navBar">
-      <a href="#" class="nav-link active" onclick="navFiltrar('all', this)">Inicio</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('new', this)">Novedades</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('bestseller', this)">Más vendidos</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('ficcion', this)">Ficción</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('noficcion', this)">No ficción</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('negocios', this)">Negocios</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('ciencia', this)">Ciencia</a>
+    <nav class="nav-bar">
+      <a href="#">Inicio</a>
+      <a href="#">Novedades</a>
+      <a href="#">Más vendidos</a>
+      <a href="#">Ficción</a>
+      <a href="#">No ficción</a>
+      <a href="#">Negocios</a>
+      <a href="#">Ciencia</a>
     </nav>
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#" onclick="navFiltrar('all',null);toggleMenu()">🏠 Inicio</a>
-      <a href="#" onclick="navFiltrar('new',null);toggleMenu()">✨ Novedades</a>
-      <a href="#" onclick="navFiltrar('bestseller',null);toggleMenu()">🔥 Más vendidos</a>
-      <a href="#" onclick="navFiltrar('ficcion',null);toggleMenu()">📖 Ficción</a>
-      <a href="#" onclick="navFiltrar('noficcion',null);toggleMenu()">📚 No ficción</a>
-      <a href="#" onclick="navFiltrar('negocios',null);toggleMenu()">💼 Negocios</a>
-      <a href="#" onclick="navFiltrar('ciencia',null);toggleMenu()">🔬 Ciencia</a>
-      <a href="ofertas.html" onclick="toggleMenu()">🏷️ Ver ofertas</a>
-    </div>
   </header>
 
   <!-- HERO BANNER -->
@@ -84,15 +71,6 @@
     <div class="badge-item"><i class="fa fa-lock"></i> Pago 100% seguro</div>
     <div class="badge-item"><i class="fa fa-headset"></i> Soporte 24/7</div>
   </div>
-
-  <!-- SECCIÓN MÁS VENDIDOS -->
-  <section class="mas-vendidos" id="seccionDestacados">
-    <div class="mv-header">
-      <h2 class="section-title"><i class="fa fa-fire" style="color:#e53e3e;font-size:26px"></i> Más Vendidos</h2>
-      <p class="section-sub">Los títulos favoritos de nuestros lectores</p>
-    </div>
-    <div class="mv-carrusel" id="mvCarrusel"></div>
-  </section>
 
   <!-- CATALOGO -->
   <section class="catalogo" id="catalogo">
@@ -293,29 +271,6 @@
         <div class="stat-card"><i class="fa fa-tag"></i><div><span id="stat-precio">$0</span><p>Precio promedio</p></div></div>
         <div class="stat-card"><i class="fa fa-list"></i><div><span id="stat-cats">0</span><p>Categorías</p></div></div>
       </div>
-
-      <!-- EDITOR PORTADA HERO -->
-      <div class="admin-form-section">
-        <h3><i class="fa fa-image"></i> Libros en portada (Hero)</h3>
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Selecciona qué 3 libros aparecen en la imagen de portada del sitio.</p>
-        <div class="hero-editor" id="heroEditor">
-          <div class="hero-slot">
-            <label>Posición 1 (fondo)</label>
-            <select id="hero-slot-0" onchange="actualizarHero()"></select>
-            <img class="hero-slot-preview" id="hero-preview-0" src="" alt="" />
-          </div>
-          <div class="hero-slot">
-            <label>Posición 2 (centro)</label>
-            <select id="hero-slot-1" onchange="actualizarHero()"></select>
-            <img class="hero-slot-preview" id="hero-preview-1" src="" alt="" />
-          </div>
-          <div class="hero-slot">
-            <label>Posición 3 (frente)</label>
-            <select id="hero-slot-2" onchange="actualizarHero()"></select>
-            <img class="hero-slot-preview" id="hero-preview-2" src="" alt="" />
-          </div>
-        </div>
-      </div>
       <div class="admin-form-section">
         <h3 id="form-titulo-admin"><i class="fa fa-plus-circle"></i> Agregar nuevo libro</h3>
         <div class="admin-form">
@@ -377,8 +332,32 @@
           </table>
         </div>
       </div>
+
+      <!-- CONTROL COUNTDOWN OFERTAS -->
+      <div class="admin-form-section" style="margin-top:24px">
+        <h3><i class="fa fa-clock"></i> Countdown de Ofertas</h3>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Controla cuándo termina la oferta en la página de Ofertas Especiales. Si no hay fecha activa, el contador no se muestra.</p>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="field-group">
+            <label>Fecha y hora de fin de oferta</label>
+            <input type="datetime-local" id="oferta-fecha-input" style="padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);" />
+          </div>
+          <div style="background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <span style="color:var(--text-muted)">Fecha activa:</span>
+            <strong id="oferta-fin-actual" style="color:var(--text-muted)">Sin fecha configurada</strong>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn-save" onclick="guardarFechaOferta()"><i class="fa fa-floppy-disk"></i> Guardar fecha</button>
+            <button class="btn-cancel-form" style="display:flex" onclick="limpiarFechaOferta()"><i class="fa fa-ban"></i> Quitar oferta</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- MODAL CONFIRMACIÓN PEDIDO -->
+  <div class="modal-overlay confirm-overlay" id="confirmOverlay" onclick="cerrarConfirmacion()"></div>
+  <div class="modal confirm-modal" id="confirmModal"></div>
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
