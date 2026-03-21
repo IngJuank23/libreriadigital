@@ -1,5 +1,13 @@
-// ===== DATOS DE LIBROS =====
-const libros = [
+// ===== CATEGORÍAS POR DEFECTO =====
+const CATEGORIAS_DEFAULT = [
+  { id: "negocios", label: "Negocios" },
+  { id: "historia", label: "Historia" },
+  { id: "ciencia",  label: "Ciencia"  },
+  { id: "ficcion",  label: "Ficcion"  }
+];
+
+// ===== DATOS DE LIBROS (default) =====
+const librosDefault = [
   {
     id: 1,
     titulo: "Las 48 Leyes del Poder",
@@ -113,24 +121,37 @@ const libros = [
   }
 ];
 
+// ===== PERSISTENCIA LOCALSTORAGE =====
+function cargarDatos() {
+  const librosGuardados = localStorage.getItem("ld_libros");
+  const catsGuardadas   = localStorage.getItem("ld_categorias");
+  return {
+    libros: librosGuardados ? JSON.parse(librosGuardados) : librosDefault,
+    categorias: catsGuardadas ? JSON.parse(catsGuardadas) : CATEGORIAS_DEFAULT
+  };
+}
+
+function guardarLibrosLS() {
+  localStorage.setItem("ld_libros", JSON.stringify(libros));
+}
+
+function guardarCategoriasLS() {
+  localStorage.setItem("ld_categorias", JSON.stringify(categorias));
+}
+
+// ===== ESTADO GLOBAL =====
+const datos = cargarDatos();
+const libros = datos.libros;
+const categorias = datos.categorias;
+
 // ===== ESTADO DEL CARRITO =====
 let carrito = [];
 let librosVisibles = [...libros];
 
-// ===== PORTADAS HERO (editables desde admin) =====
-let heroSlots = [
-  "https://images-na.ssl-images-amazon.com/images/I/51NKhnjhpGL.jpg",
-  "https://images-na.ssl-images-amazon.com/images/I/41xShlnTZTL.jpg",
-  "https://images-na.ssl-images-amazon.com/images/I/41j-s9fHJcL.jpg"
-];
-
 // ===== INICIALIZAR =====
 document.addEventListener("DOMContentLoaded", () => {
   renderGrid(libros);
-  renderMasVendidos();
   actualizarCarritoUI();
-  initScrollAnimations();
-  aplicarHeroSlots();
 });
 
 // ===== RENDER GRID =====
@@ -187,7 +208,6 @@ function renderGrid(lista) {
         </div>
       </div>`;
   }).join("");
-  setTimeout(observarTarjetas, 50);
 }
 
 // ===== AGREGAR AL CARRITO =====
@@ -355,139 +375,6 @@ function scrollCatalogo() {
   document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
 }
 
-// ===== NAV FUNCIONAL =====
-function navFiltrar(tipo, el) {
-  // Marcar activo
-  document.querySelectorAll(".nav-link").forEach(a => a.classList.remove("active"));
-  if (el) el.classList.add("active");
-
-  // Scroll al catálogo
-  document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
-
-  if (tipo === "all") {
-    librosVisibles = [...libros];
-  } else if (tipo === "new") {
-    librosVisibles = libros.filter(l => l.badge === "new");
-  } else if (tipo === "bestseller") {
-    librosVisibles = libros.filter(l => l.badge === "bestseller");
-  } else if (tipo === "noficcion") {
-    librosVisibles = libros.filter(l => ["negocios","historia","ciencia"].includes(l.categoria));
-  } else {
-    librosVisibles = libros.filter(l => l.categoria === tipo);
-  }
-  renderGrid(librosVisibles);
-}
-
-// ===== HAMBURGUESA MÓVIL =====
-function toggleMenu() {
-  const menu = document.getElementById("mobileMenu");
-  const ham  = document.getElementById("hamburger");
-  menu.classList.toggle("open");
-  ham.classList.toggle("open");
-}
-document.addEventListener("click", e => {
-  const menu = document.getElementById("mobileMenu");
-  const ham  = document.getElementById("hamburger");
-  if (menu && ham && !menu.contains(e.target) && !ham.contains(e.target)) {
-    menu.classList.remove("open");
-    ham.classList.remove("open");
-  }
-});
-
-// ===== MÁS VENDIDOS (carrusel) =====
-function renderMasVendidos() {
-  const top = libros.filter(l => l.badge === "bestseller" || l.reseñas >= 3000)
-    .sort((a,b) => b.reseñas - a.reseñas)
-    .slice(0, 6);
-
-  const carrusel = document.getElementById("mvCarrusel");
-  if (!carrusel) return;
-
-  carrusel.innerHTML = top.map(l => {
-    const ahorro = ((l.precioOriginal - l.precio) / l.precioOriginal * 100).toFixed(0);
-    return `
-      <div class="mv-card" onclick="verDetalle(${l.id})">
-        <div class="mv-img-wrap">
-          <img src="${l.img}" alt="${l.titulo}" loading="lazy" onerror="this.src='https://via.placeholder.com/120x160/f0e8dc/c8860a?text=📚'"/>
-          <div class="mv-ahorro">-${ahorro}%</div>
-        </div>
-        <div class="mv-info">
-          <p class="mv-titulo">${l.titulo}</p>
-          <p class="mv-autor">${l.autor}</p>
-          <div class="mv-precios">
-            <span class="mv-precio">$${l.precio.toFixed(2)}</span>
-            <span class="mv-orig">$${l.precioOriginal.toFixed(2)}</span>
-          </div>
-        </div>
-      </div>`;
-  }).join("");
-}
-
-// ===== ANIMACIONES SCROLL =====
-function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-
-  // Observar secciones
-  document.querySelectorAll(".mas-vendidos, .catalogo-header, .badges-bar").forEach(el => {
-    el.classList.add("fade-section");
-    observer.observe(el);
-  });
-
-  // Observar tarjetas del grid cuando se rendericen
-  window._scrollObserver = observer;
-}
-
-function observarTarjetas() {
-  if (!window._scrollObserver) return;
-  document.querySelectorAll(".libro:not(.observed)").forEach((el, i) => {
-    el.classList.add("observed", "fade-card");
-    el.style.transitionDelay = `${(i % 4) * 60}ms`;
-    window._scrollObserver.observe(el);
-  });
-}
-
-// ===== HERO SLOTS =====
-function aplicarHeroSlots() {
-  const imgs = document.querySelectorAll(".book-stack img");
-  heroSlots.forEach((url, i) => {
-    if (imgs[i]) imgs[i].src = url;
-  });
-}
-
-function actualizarHero() {
-  for (let i = 0; i < 3; i++) {
-    const sel = document.getElementById(`hero-slot-${i}`);
-    const prev = document.getElementById(`hero-preview-${i}`);
-    if (!sel) continue;
-    const libro = libros.find(l => l.id === parseInt(sel.value));
-    if (libro) {
-      heroSlots[i] = libro.img;
-      if (prev) { prev.src = libro.img; prev.style.display = "block"; }
-    }
-  }
-  aplicarHeroSlots();
-  mostrarToast("🖼️ Portada actualizada");
-}
-
-function poblarHeroSelects() {
-  for (let i = 0; i < 3; i++) {
-    const sel = document.getElementById(`hero-slot-${i}`);
-    if (!sel) continue;
-    sel.innerHTML = libros.map(l =>
-      `<option value="${l.id}" ${heroSlots[i] === l.img ? "selected" : ""}>${l.titulo}</option>`
-    ).join("");
-    const prev = document.getElementById(`hero-preview-${i}`);
-    if (prev) { prev.src = heroSlots[i]; prev.style.display = "block"; }
-  }
-}
-
 // ===== VISTA PREVIA LIBRO =====
 function verDetalle(id) {
   const l = libros.find(x => x.id === id);
@@ -585,7 +472,6 @@ function abrirAdmin() {
   actualizarStats();
   renderTablaAdmin();
   cancelarEdicion();
-  poblarHeroSelects();
 }
 
 function cerrarAdmin() {
@@ -682,10 +568,8 @@ function guardarLibro() {
 
   librosVisibles = [...libros];
   renderGrid(libros);
-  renderMasVendidos();
   actualizarStats();
   renderTablaAdmin();
-  poblarHeroSelects();
   cancelarEdicion();
 }
 
@@ -722,6 +606,7 @@ function eliminarLibro(id) {
 
   const idx = libros.indexOf(l);
   libros.splice(idx, 1);
+  guardarLibrosLS();
   librosVisibles = [...libros];
 
   // Si estaba en carrito, quitarlo
@@ -744,7 +629,7 @@ function cancelarEdicion() {
   });
   document.getElementById("f-estrellas").value = "";
   document.getElementById("f-reseñas").value = "";
-  document.getElementById("f-categoria").value = "negocios";
+  document.getElementById("f-categoria").value = categorias.length ? categorias[0].id : "";
   document.getElementById("f-badge").value = "";
   document.getElementById("f-resena").value = "";
   document.getElementById("img-preview").style.display = "none";
@@ -767,6 +652,74 @@ function previewImg() {
     img.style.display = "none";
     placeholder.style.display = "flex";
   }
+}
+
+// ===========================
+// GESTIÓN DE CATEGORÍAS
+// ===========================
+
+function poblarSelectsCategorias() {
+  // Select del formulario de libro
+  const selCat = document.getElementById("f-categoria");
+  if (selCat) {
+    const actual = selCat.value;
+    selCat.innerHTML = categorias.map(c =>
+      `<option value="${c.id}">${c.label}</option>`
+    ).join("");
+    if (actual) selCat.value = actual;
+  }
+  // Select de filtro del catálogo
+  const selFiltro = document.getElementById("filtro-categoria");
+  if (selFiltro) {
+    selFiltro.innerHTML = `<option value="all">Todas las categorías</option>` +
+      categorias.map(c => `<option value="${c.id}">${c.label}</option>`).join("");
+  }
+}
+
+function renderCategorias() {
+  const container = document.getElementById("cats-lista");
+  if (!container) return;
+  if (categorias.length === 0) {
+    container.innerHTML = `<p style="color:var(--text-muted);font-size:13px;text-align:center;padding:16px">Sin categorías. Agrega una arriba.</p>`;
+    return;
+  }
+  container.innerHTML = categorias.map(c => `
+    <div class="cat-tag">
+      <span>${c.label}</span>
+      <button onclick="eliminarCategoria('${c.id}')" title="Eliminar">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>`).join("");
+}
+
+function agregarCategoria() {
+  const input = document.getElementById("nueva-cat-input");
+  const raw = input.value.trim();
+  if (!raw) { mostrarToast("⚠️ Escribe el nombre de la categoría"); return; }
+  const id = raw.toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+  if (categorias.find(c => c.id === id)) { mostrarToast("⚠️ Esa categoría ya existe"); return; }
+  categorias.push({ id, label: raw });
+  guardarCategoriasLS();
+  poblarSelectsCategorias();
+  renderCategorias();
+  input.value = "";
+  mostrarToast(`✅ Categoría "${raw}" agregada`);
+}
+
+function eliminarCategoria(id) {
+  const en_uso = libros.some(l => l.categoria === id);
+  if (en_uso) { mostrarToast("⚠️ No puedes eliminar una categoría en uso"); return; }
+  const idx = categorias.findIndex(c => c.id === id);
+  if (idx === -1) return;
+  const label = categorias[idx].label;
+  if (!confirm(`¿Eliminar la categoría "${label}"?`)) return;
+  categorias.splice(idx, 1);
+  guardarCategoriasLS();
+  poblarSelectsCategorias();
+  renderCategorias();
+  mostrarToast(`🗑️ Categoría "${label}" eliminada`);
 }
 
 // ===========================
