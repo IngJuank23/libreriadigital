@@ -7,6 +7,20 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    .cat-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--cream); border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 6px 12px;
+      font-size: 13px; color: var(--text);
+    }
+    .cat-tag button {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 11px; padding: 0;
+      line-height: 1; transition: color .15s;
+    }
+    .cat-tag button:hover { color: #e53e3e; }
+  </style>
 </head>
 <body>
 
@@ -34,28 +48,15 @@
         </button>
       </div>
     </div>
-    <nav class="nav-bar" id="navBar">
-      <a href="#" class="nav-link active" onclick="navFiltrar('all', this)">Inicio</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('new', this)">Novedades</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('bestseller', this)">Más vendidos</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('ficcion', this)">Ficción</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('noficcion', this)">No ficción</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('negocios', this)">Negocios</a>
-      <a href="#" class="nav-link" onclick="navFiltrar('ciencia', this)">Ciencia</a>
+    <nav class="nav-bar">
+      <a href="#">Inicio</a>
+      <a href="#">Novedades</a>
+      <a href="#">Más vendidos</a>
+      <a href="#">Ficción</a>
+      <a href="#">No ficción</a>
+      <a href="#">Negocios</a>
+      <a href="#">Ciencia</a>
     </nav>
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#" onclick="navFiltrar('all',null);toggleMenu()">🏠 Inicio</a>
-      <a href="#" onclick="navFiltrar('new',null);toggleMenu()">✨ Novedades</a>
-      <a href="#" onclick="navFiltrar('bestseller',null);toggleMenu()">🔥 Más vendidos</a>
-      <a href="#" onclick="navFiltrar('ficcion',null);toggleMenu()">📖 Ficción</a>
-      <a href="#" onclick="navFiltrar('noficcion',null);toggleMenu()">📚 No ficción</a>
-      <a href="#" onclick="navFiltrar('negocios',null);toggleMenu()">💼 Negocios</a>
-      <a href="#" onclick="navFiltrar('ciencia',null);toggleMenu()">🔬 Ciencia</a>
-      <a href="ofertas.html" onclick="toggleMenu()">🏷️ Ver ofertas</a>
-    </div>
   </header>
 
   <!-- HERO BANNER -->
@@ -85,15 +86,6 @@
     <div class="badge-item"><i class="fa fa-headset"></i> Soporte 24/7</div>
   </div>
 
-  <!-- SECCIÓN MÁS VENDIDOS -->
-  <section class="mas-vendidos" id="seccionDestacados">
-    <div class="mv-header">
-      <h2 class="section-title"><i class="fa fa-fire" style="color:#e53e3e;font-size:26px"></i> Más Vendidos</h2>
-      <p class="section-sub">Los títulos favoritos de nuestros lectores</p>
-    </div>
-    <div class="mv-carrusel" id="mvCarrusel"></div>
-  </section>
-
   <!-- CATALOGO -->
   <section class="catalogo" id="catalogo">
     <div class="catalogo-header">
@@ -102,7 +94,7 @@
         <p class="section-sub" id="resultado-busqueda">Mostrando todos los títulos</p>
       </div>
       <div class="filtros">
-        <select onchange="filtrarCategoria(this.value)">
+        <select id="filtro-categoria" onchange="filtrarCategoria(this.value)">
           <option value="all">Todas las categorías</option>
           <option value="negocios">Negocios</option>
           <option value="historia">Historia</option>
@@ -293,29 +285,6 @@
         <div class="stat-card"><i class="fa fa-tag"></i><div><span id="stat-precio">$0</span><p>Precio promedio</p></div></div>
         <div class="stat-card"><i class="fa fa-list"></i><div><span id="stat-cats">0</span><p>Categorías</p></div></div>
       </div>
-
-      <!-- EDITOR PORTADA HERO -->
-      <div class="admin-form-section">
-        <h3><i class="fa fa-image"></i> Libros en portada (Hero)</h3>
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Selecciona qué 3 libros aparecen en la imagen de portada del sitio.</p>
-        <div class="hero-editor" id="heroEditor">
-          <div class="hero-slot">
-            <label>Posición 1 (fondo)</label>
-            <select id="hero-slot-0" onchange="actualizarHero()"></select>
-            <img class="hero-slot-preview" id="hero-preview-0" src="" alt="" />
-          </div>
-          <div class="hero-slot">
-            <label>Posición 2 (centro)</label>
-            <select id="hero-slot-1" onchange="actualizarHero()"></select>
-            <img class="hero-slot-preview" id="hero-preview-1" src="" alt="" />
-          </div>
-          <div class="hero-slot">
-            <label>Posición 3 (frente)</label>
-            <select id="hero-slot-2" onchange="actualizarHero()"></select>
-            <img class="hero-slot-preview" id="hero-preview-2" src="" alt="" />
-          </div>
-        </div>
-      </div>
       <div class="admin-form-section">
         <h3 id="form-titulo-admin"><i class="fa fa-plus-circle"></i> Agregar nuevo libro</h3>
         <div class="admin-form">
@@ -330,12 +299,7 @@
           </div>
           <div class="form-row">
             <div class="field-group"><label>Categoría *</label>
-              <select id="f-categoria">
-                <option value="negocios">Negocios</option>
-                <option value="historia">Historia</option>
-                <option value="ciencia">Ciencia</option>
-                <option value="ficcion">Ficción</option>
-              </select>
+              <select id="f-categoria"></select>
             </div>
             <div class="field-group"><label>Estrellas (1–5)</label><input type="number" id="f-estrellas" placeholder="5" min="1" max="5" /></div>
             <div class="field-group"><label>Número de reseñas</label><input type="number" id="f-reseñas" placeholder="1000" min="0" /></div>
@@ -365,6 +329,22 @@
           </div>
         </div>
       </div>
+      <!-- GESTIÓN DE CATEGORÍAS -->
+      <div class="admin-form-section">
+        <h3><i class="fa fa-tags"></i> Gestionar Categorías</h3>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Agrega o elimina categorías del catálogo. No puedes eliminar una categoría que tenga libros asignados.</p>
+        <div style="display:flex;gap:10px;margin-bottom:16px">
+          <input type="text" id="nueva-cat-input" placeholder="Ej: Filosofía, Psicología…"
+            style="flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text)"
+            onkeydown="if(event.key==='Enter') agregarCategoria()"
+            onfocus="this.style.borderColor='var(--amber)'" onblur="this.style.borderColor='var(--border)'" />
+          <button class="btn-save" onclick="agregarCategoria()" style="white-space:nowrap">
+            <i class="fa fa-plus"></i> Agregar
+          </button>
+        </div>
+        <div id="cats-lista" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+
       <div class="admin-table-section">
         <div class="admin-table-header">
           <h3><i class="fa fa-table-list"></i> Libros en catálogo</h3>
